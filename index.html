@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieTracker</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="index-body">
+    <div class="div-choise">
+    <h1>MovieTracker</h1>
+    <h2>Login or Register ?</h2>
+    <a href="register.html"><h3>Register</h3></a>
+    <a href="login.html"><h3>Log In</h3></a>
+</div>
+    <script>
+
+        if (localStorage.getItem("accessToken")) {
+            window.location.href = "home.html";
+        }
+    </script>
+</body>
+</html>
