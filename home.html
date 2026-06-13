@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://cdn.tailwindcss.com"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MovieTracker</title>
-  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="font-sans bg-gray-100 text-gray-800 m-0">
+
   <div class="global">
-   
-    <header class="panel">
-      <h1>MovieTracker</h1>
-      <input type="text" id="search" placeholder="Search movies...">
-      <div class="buttons">
-        <button id="account"> Account</button>
-        <button id="favourite"> Favourite</button>
-        <button id="addFilm"> Add Film</button>
-        <button id="quit"> Quit</button>
+    <!-- Top Panel -->
+    <header class="panel bg-gray-900 text-white p-4 flex items-center justify-between">
+      <h1 class="text-2xl m-0">MovieTracker</h1>
+      <input class="p-2 rounded ml-5 border-0" type="text" id="search" placeholder="Search movies...">
+      <div class="buttons flex gap-3">
+        <button id="account" class="bg-gray-700 text-white py-2 px-3 rounded hover:bg-gray-600">Account</button>
+        <button id="favourite" class="bg-gray-700 text-white py-2 px-3 rounded hover:bg-gray-600">Favourite</button>
+        <button id="addFilm" class="bg-gray-700 text-white py-2 px-3 rounded hover:bg-gray-600">Add Film</button>
+        <button id="quit" class="bg-gray-700 text-white py-2 px-3 rounded hover:bg-gray-600">Quit</button>
       </div>
     </header>
 
   
-    <main class="lists">
-      <h2>List of Movies</h2>
-      <div id="movies-list" class="list">
+    <main class="lists p-5">
+      <h2 class="mb-4 text-xl">List of Movies</h2>
+      <div id="movies-list" class="list grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-5">
        
       </div>
     </main>
