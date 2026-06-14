@@ -161,8 +161,41 @@ const getProfile = async (
     });
   }
 };
+
+const addMovie = async (req: AuthRequest, res: Response) => {
+  try {
+    const { title, year, genre, poster_url, description } = req.body;
+    if (!title) return res.status(400).json({ message: "Title is required" });
+
+    const result = await db.query(
+      `INSERT INTO movies (title, year, genre, poster_url, description, created_by)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [title, year || null, genre || null, poster_url || null, description || null, req.user.id]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+const getMovies = async (req: AuthRequest, res: Response) => {
+  try {
+    const result = await db.query(
+      `SELECT m.*, u.username AS added_by
+       FROM movies m
+       LEFT JOIN users u ON u.id = m.created_by
+       ORDER BY m.created_at DESC`,
+      []
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 module.exports = {
   postUser,
   loginUser,
   getProfile,
+    addMovie,getMovies
 };
