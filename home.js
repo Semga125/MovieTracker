@@ -1,7 +1,7 @@
 const API = "http://localhost:10000/users";
 const token = localStorage.getItem("accessToken");
 
-if (!token) window.location.href = "login.html";
+if (!token) window.location.href = "index.html";
 
 function authHeaders() {
   return { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
