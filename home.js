@@ -1,6 +1,6 @@
 const API = "http://localhost:10000/users";
 const token = localStorage.getItem("accessToken");
-
+let allMovies;
 if (!token) window.location.href = "index.html";
 
 function authHeaders() {
@@ -10,7 +10,9 @@ async function loadMovies() {
   try {
     const res = await fetch(`${API}/movies`, { headers: authHeaders() });
     const movies = await res.json();
-    renderMovies(movies);
+    
+    allMovies = movies;
+renderMovies(movies);
   } catch (err) {
     console.error("loadMovies error:", err);
   }
@@ -88,6 +90,20 @@ async function submitFilm() {
   }
 }
 
+
+
+function searchMovies(query) {
+  const filtered = allMovies.filter(m => 
+    m.title.toLowerCase().includes(query.toLowerCase())
+  );
+  renderMovies(filtered);
+}
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("account").addEventListener("click", () => {
     window.location.href = "account.html";
@@ -98,5 +114,16 @@ document.addEventListener("DOMContentLoaded", () => {
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
   });
+ document.getElementById("search").addEventListener("input", (e) => {
+  searchMovies(e.target.value);
+});
+  document.getElementById("quit").addEventListener("click", () => {
+    localStorage.removeItem("accessToken");
+    window.location.href = "index.html";
+  });
   loadMovies();
 });
+
+
+
+

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!token) {
     document.body.innerHTML = `
       <h2>You are not logged in</h2>
-      <a href="login.html">Go to Login</a>
+      <a href="index.html">Go to Login</a>
     `;
     return;
   }
