@@ -181,13 +181,40 @@ const addMovie = async (req: AuthRequest, res: Response) => {
 const getMovies = async (req: AuthRequest, res: Response) => {
   try {
     const result = await db.query(
-      `SELECT m.*, u.username AS added_by
+      `SELECT m.*, u.username AS added_by,
+              (m.created_by = $1) AS is_owner
        FROM movies m
        LEFT JOIN users u ON u.id = m.created_by
        ORDER BY m.created_at DESC`,
-      []
+      [req.user.id]
     );
     res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+const deleteMovie = async (req: AuthRequest, res: Response) => {
+  try {
+    const movieId = parseInt((req as any).params.id);
+    
+    
+    const movie = await db.query(
+      "SELECT * FROM movies WHERE id = $1",
+      [movieId]
+    );
+    
+    if (movie.rows.length === 0)
+      {return res.status(404).json({ message: "Movie not found" });}
+      
+    
+    if (movie.rows[0].created_by !== req.user.id)
+      {return res.status(403).json({ message: "You can only delete your own movies" });}
+      
+    
+    await db.query("DELETE FROM movies WHERE id = $1", [movieId]);
+    
+    res.json({ message: "Movie deleted" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -197,5 +224,5 @@ module.exports = {
   postUser,
   loginUser,
   getProfile,
-    addMovie,getMovies
+    addMovie,getMovies,deleteMovie
 };

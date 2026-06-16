@@ -17,15 +17,12 @@ renderMovies(movies);
     console.error("loadMovies error:", err);
   }
 }
-
 function renderMovies(movies) {
   const list = document.getElementById("movies-list");
-
   if (!movies.length) {
     list.innerHTML = `<p class="text-gray-400 col-span-full">No movies yet.</p>`;
     return;
   }
-
   list.innerHTML = movies.map(m => `
     <div class="bg-white rounded-xl shadow overflow-hidden flex flex-col">
       ${m.poster_url
@@ -37,9 +34,14 @@ function renderMovies(movies) {
         <p class="text-sm text-gray-500">${m.year || ""} ${m.genre ? "· " + m.genre : ""}</p>
         ${m.description ? `<p class="text-sm text-gray-600">${m.description}</p>` : ""}
         <p class="text-xs text-gray-400 mt-1">Added by: ${m.added_by || "unknown"}</p>
+        ${m.is_owner ? `<button class="delete-btn mt-2 text-sm py-1 px-2 rounded border border-red-300 text-red-500 hover:bg-red-50" data-id="${m.id}">Delete</button>` : ""}
       </div>
     </div>
   `).join("");
+
+  list.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => deleteMovie(btn.dataset.id));
+  });
 }
 
 const modal = document.getElementById("modal");
@@ -100,7 +102,21 @@ function searchMovies(query) {
 }
 
 
-
+async function deleteMovie(id) {
+  try {
+    const res = await fetch(`${API}/movies/${id}`, {
+      method: "DELETE",
+      headers: authHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message);
+    }
+    loadMovies();
+  } catch (err) {
+    console.error("deleteMovie error:", err);
+  }
+}
 
 
 
