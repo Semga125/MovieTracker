@@ -220,9 +220,54 @@ const deleteMovie = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+const getFavorites = async (req: AuthRequest, res: Response) => {
+  try {
+   const result = await db.query(
+  `SELECT m.*, u.username AS added_by,
+          true AS is_favorite,
+          (m.created_by = $1) AS is_owner
+   FROM favorites f
+   JOIN movies m ON m.id = f.movie_id
+   LEFT JOIN users u ON u.id = m.created_by
+   WHERE f.user_id = $1
+   ORDER BY f.id DESC`,
+  [req.user.id]
+);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const toggleFavorite = async (req: AuthRequest, res: Response) => {
+  try {
+    const movieId = parseInt((req as any).params.id);
+
+    const existing = await db.query(
+      "SELECT id FROM favorites WHERE user_id = $1 AND movie_id = $2",
+      [req.user.id, movieId]
+    );
+
+    if (existing.rows.length > 0) {
+      await db.query("DELETE FROM favorites WHERE user_id = $1 AND movie_id = $2", [req.user.id, movieId]);
+      return res.json({ is_favorite: false });
+    } else {
+      await db.query("INSERT INTO favorites (user_id, movie_id) VALUES ($1, $2)", [req.user.id, movieId]);
+      return res.json({ is_favorite: true });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
 module.exports = {
   postUser,
   loginUser,
   getProfile,
-    addMovie,getMovies,deleteMovie
+    addMovie,getMovies,deleteMovie,getFavorites,toggleFavorite
 };

@@ -17,6 +17,16 @@ renderMovies(movies);
     console.error("loadMovies error:", err);
   }
 }
+async function loadFavorites() {
+  try {
+    const res = await fetch(`${API}/movies/favorites`, { headers: authHeaders() });
+    const movies = await res.json();
+    allMovies = movies;
+    renderMovies(movies);
+  } catch (err) {
+    console.error("loadFavorites error:", err);
+  }
+}
 function renderMovies(movies) {
   const list = document.getElementById("movies-list");
   if (!movies.length) {
@@ -33,8 +43,11 @@ function renderMovies(movies) {
         <h3 class="font-bold text-lg">${m.title}</h3>
         <p class="text-sm text-gray-500">${m.year || ""} ${m.genre ? "· " + m.genre : ""}</p>
         ${m.description ? `<p class="text-sm text-gray-600">${m.description}</p>` : ""}
-        <p class="text-xs text-gray-400 mt-1">Added by: ${m.added_by || "unknown"}</p>
-        ${m.is_owner ? `<button class="delete-btn mt-2 text-sm py-1 px-2 rounded border border-red-300 text-red-500 hover:bg-red-50" data-id="${m.id}">Delete</button>` : ""}
+       <p class="text-xs text-gray-400 mt-1">Added by: ${m.added_by || "unknown"}</p>
+<button class="fav-btn mt-2 text-sm py-1 px-2 rounded border ${m.is_favorite ? "border-yellow-400 text-yellow-500" : "border-gray-300 text-gray-500"}" data-id="${m.id}" data-fav="${m.is_favorite}">
+  ${m.is_favorite ? "★ In Favourites" : "☆ Add to Favourites"}
+</button>
+${m.is_owner ? `<button class="delete-btn mt-2 text-sm py-1 px-2 rounded border border-red-300 text-red-500" data-id="${m.id}">Delete</button>` : ""}
       </div>
     </div>
   `).join("");
@@ -42,6 +55,9 @@ function renderMovies(movies) {
   list.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", () => deleteMovie(btn.dataset.id));
   });
+  list.querySelectorAll(".fav-btn").forEach(btn => {
+  btn.addEventListener("click", () => toggleFavorite(btn));
+});
 }
 
 const modal = document.getElementById("modal");
@@ -118,12 +134,41 @@ async function deleteMovie(id) {
   }
 }
 
+async function toggleFavorite(btn) {
+  const movieId = btn.dataset.id;
+  try {
+    const res = await fetch(`${API}/movies/${movieId}/favorite`, {
+      method: "POST",
+      headers: authHeaders(),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
 
+    btn.dataset.fav = data.is_favorite;
+    if (data.is_favorite) {
+      btn.textContent = "★ In Favourites";
+      btn.className = "fav-btn mt-2 text-sm py-1 px-2 rounded border border-yellow-400 text-yellow-500";
+    } else {
+      btn.textContent = "☆ Add to Favourites";
+      btn.className = "fav-btn mt-2 text-sm py-1 px-2 rounded border border-gray-300 text-gray-500";
+    }
+
+
+    const movie = allMovies.find(m => String(m.id) === String(movieId));
+    if (movie) movie.is_favorite = data.is_favorite;
+
+  } catch (err) {
+    console.error("toggleFavorite error:", err);
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("account").addEventListener("click", () => {
     window.location.href = "account.html";
   });
+  document.getElementById("favourite").addEventListener("click", () => {
+  loadFavorites();
+});
   document.getElementById("addFilm").addEventListener("click", openModal);
   document.getElementById("modal-cancel").addEventListener("click", closeModal);
   document.getElementById("modal-submit").addEventListener("click", submitFilm);
