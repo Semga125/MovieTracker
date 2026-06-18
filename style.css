@@ -99,3 +99,121 @@
 .movie-card button:hover {
   background-color: #e6b800;
 }
+.index-body{
+  background-image: url("https://images.wallpaperscraft.ru/image/single/nebo_goluboj_tsvet_176240_300x188.jpg");
+  margin: 0;
+    min-height: 100vh;
+     background-size: cover;      
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+.div-choise {
+  padding: 130px;
+  text-align: center;
+  border: 2px solid black;
+}
+.reg-button {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    color: white;
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.reg-button:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+.MovieTracker-h1-text{
+  font-size: 4rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+.first-choise {
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+.register-body {
+   background-image: url("https://images.wallpaperscraft.ru/image/single/gradient_raznotsvetnyj_pastelnyj_203977_300x188.jpg");
+  margin: 0;
+    min-height: 100vh;
+     background-size: cover;      
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+
+
+
+.auth-container {
+  padding: 130px;
+  text-align: center;
+  border: 2px solid black;
+}.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    width: 250px;
+    padding: 12px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group input::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+.form-group input:focus {
+    border-color: white;
+    background: rgba(255,255,255,0.25);
+    transform: scale(1.02);
+}
+.auth-container {
+    padding: 50px;
+    text-align: center;
+
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+}
+.regs-button {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.regs-button:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+.account-body {
+  background-image: url("https://images.wallpaperscraft.ru/image/single/gradient_raznotsvetnyj_pastelnyj_203977_300x188.jpg");
+  margin: 0;
+    min-height: 100vh;
+     background-size: cover;      
+    background-position: center; 
+    background-repeat: no-repeat;
+}

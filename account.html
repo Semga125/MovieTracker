@@ -3,16 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>My Account</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-  <h1>Мій профіль</h1>
-
-  <p id="user-id">ID: ...</p>
-  <p id="user-login">Login: ...</p>
-
-  <button id="logout-btn">Logout</button>
-
+<body class="account-body">
+ <div class="auth-container" style="max-width: 400px; margin: 30px auto;">
+    <h1 class="MovieTracker-h1-text">My Account</h1>
+    <div class="form-group">
+      <label>ID</label>
+      <p id="user-id" style="color: white; font-size: 1.1rem;">...</p>
+    </div>
+    <div class="form-group">
+      <label>Username</label>
+      <p id="user-login" style="color: white; font-size: 1.1rem;">...</p>
+    </div>
+    <div class="form-group">
+      <label>Registered</label>
+      <p id="user-created" style="color: white; font-size: 1.1rem;">...</p>
+    </div>
+    <button id="logout-btn" class="regs-button">Logout</button>
+    <button onclick="window.location.href='home.html'" class="regs-button">← Back</button>
+  </div>
   <script src="account.js"></script>
 </body>
 </html>

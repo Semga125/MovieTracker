@@ -181,13 +181,17 @@ const addMovie = async (req: AuthRequest, res: Response) => {
 const getMovies = async (req: AuthRequest, res: Response) => {
   try {
     const result = await db.query(
-      `SELECT m.*, u.username AS added_by,
-              (m.created_by = $1) AS is_owner
-       FROM movies m
-       LEFT JOIN users u ON u.id = m.created_by
-       ORDER BY m.created_at DESC`,
-      [req.user.id]
-    );
+  `SELECT m.*, u.username AS added_by,
+          (m.created_by = $1) AS is_owner,
+          EXISTS (
+            SELECT 1 FROM favorites f
+            WHERE f.movie_id = m.id AND f.user_id = $1
+          ) AS is_favorite
+   FROM movies m
+   LEFT JOIN users u ON u.id = m.created_by
+   ORDER BY m.created_at DESC`,
+  [req.user.id]
+);
     res.json(result.rows);
   } catch (err) {
     console.error(err);

@@ -167,7 +167,13 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "account.html";
   });
   document.getElementById("favourite").addEventListener("click", () => {
-  loadFavorites();
+  if (document.getElementById("list-title").textContent === "My Favourites") {
+    document.getElementById("list-title").textContent = "All Movies";
+    loadMovies();
+  } else {
+    document.getElementById("list-title").textContent = "My Favourites";
+    loadFavorites();
+  }
 });
   document.getElementById("addFilm").addEventListener("click", openModal);
   document.getElementById("modal-cancel").addEventListener("click", closeModal);
